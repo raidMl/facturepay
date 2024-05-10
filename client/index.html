@@ -95,28 +95,33 @@
 
         }
         .service-box {
-            width: 60px;
-            height: 60px;
+            width: 80px;
+            height: 80px;
             border-radius: 50%;
             background-color: lightgray;
             padding: 20px;
             display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
             
+        }
+        .service-box span {
+            font-size: 15px;
+            margin-top: 5px;
+            text-decoration: none;
+
         }
         .service-box:hover{
             background-color: #8c92d3;
 
             color: white;}
-        .service-box img {
-            align-items: center;
-            justify-content: center;
-            width: 80px;
-            height: 80px;
-         
-        }
+      
         .service-box .img1{
-            margin-left: -5px;
-            margin-top: -5px;
+            
+            font-size: 40px;
+            margin:auto
         }
 
         .service-box .img3{
@@ -152,9 +157,12 @@
             <i class="fas fa-concierge-bell service-icon"></i>
             <h2 class="service-title">خدمة فواتير</h2>
             <div class="service-boxes">
-                <a href="" class="service-box "> <img class="img1" src="./images/electricity.png"  alt=""></a>
-                <a href="" class="service-box"><img src="./images/gaz.png" style="height: 60px;width:60px" alt=""></a>
-                <a href="" class="service-box"><img class="img3" src="./images/watter.png" alt=""></a>
+                <a href="" class="service-box "> <i class="fas fa-credit-card img1"></i> <span> خدمة الدفع</span></a>
+                <a href="" class="service-box"> <i class="fas fa-file-invoice img1"></i>  <span>الفاتورة الحالية</span></a>
+                <a href="./pages/history.html" class="service-box">            <i  class="fa fa-history img1" aria-hidden="true"></i>
+                    <span>الفواتير السابقة</span>
+                </a>
+                
             </div>
         </div>
     </div>
