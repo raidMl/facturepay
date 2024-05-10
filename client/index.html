@@ -47,7 +47,6 @@
             position: relative;
             width: 60%;
             padding: 20px;
-            margin:auto;
             margin-bottom: 20px;
 
             
@@ -141,6 +140,27 @@
             }
           }
 
+          @media screen and (max-width: 600px) {
+            .service-boxes {
+                flex-direction: column;
+                justify-content: center;
+                text-align: center;
+                align-items: center;
+            }
+            .service-box {
+                margin-bottom: 20px;
+            }
+            .search-box {
+                width: 70%;
+            }
+            .search-box input {
+                width: 70%;
+                padding: 10px;
+                border-radius: 10px;
+                border: 1px solid lightgray;
+                outline: none;
+            }
+        }
     </style>
 </head>
 <body >
