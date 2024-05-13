@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payment Facture Website</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Roboto', sans-serif;
+            background: linear-gradient(to right, #2d48dfee, #350d91f5);
+            color: #fff;
+        }
+        
+        .hero-section {
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            text-align: center;
+        }
+        
+        .content {
+            position: fixed;
+            max-width: 500px;
+            right: 200px;
+            padding: 20px;
+            text-align: center;
+        }
+        
+        h1 {
+            font-size: 3em;
+            margin-bottom: 20px;
+        }
+        
+        p {
+            font-size: 1.5em;
+            margin-bottom: 30px;
+        }
+        
+        .login-button {
+            padding: 12px 30px;
+            font-size: 1.2em;
+            border: none;
+            border-radius: 5px;
+            background-color: #fff;
+            color: #350d91f5;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        
+        .login-button:hover {
+            background-color: rgba(255, 255, 255, 0.8);
+        }
+        
+    </style>
+</head>
+<body>
+    <div class="hero-section">
+        <img src="images/img.svg" alt="" height="520px" width="520px">
+        <div class="content">
+        
+            <h1>سجلات الفواتير</h1>
+            <p>نظام الدفع السريع لفواتير الخدمات</p>
+            <a href="loginRegister" class="login-button">تسجيل الدخول</a>
+        </div>
+    </div>
+
+    <script>
+        // Typing text effect
+const textElement = document.querySelector('h1');
+const textToType = 'سجلات الفواتير - نظام الدفع السريع لفواتير الخدمات';
+let textIndex = 0;
+
+function typeText() {
+    textElement.textContent = textToType.slice(0, textIndex);
+    textIndex++;
+
+    if (textIndex > textToType.length) {
+        textIndex = 0;
+    }
+
+    setTimeout(typeText, 200); // Adjust typing speed (milliseconds)
+}
+
+typeText();
+
+    </script>
+</body>
+</html>

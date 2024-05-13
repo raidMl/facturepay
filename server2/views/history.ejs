@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>مولد الفواتير الديناميكي</title>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Roboto:100,100i,300,300i,400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../css/history.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <link rel="stylesheet" href="css/pub.css">
+</head>
+<body>
+    <div class="invoice-container">
+        <div class="invoice-header" style="text-align: center;">
+            <div>
+                <input dir="rtl" type="text" placeholder="ابحث..." style="padding: 6px 20px;">
+            </div>
+            <div><h2 style="font-size: 19px;">سجلات الفواتير</h2></div>
+        </div>
+        <div class="invoice-body">
+            <table dir="rtl">
+                <thead>
+                    <tr>
+                        <th>نوع الفاتورة</th>
+                        <th>رقم الفاتورة</th>
+                        <th>السعر</th>
+                        <th>الحالة</th>
+                        <th>حذف</th>
+                    </tr>
+                </thead>
+                <tbody id="table-body">
+                    <!-- Data will be fetched from /api/facture/payed endpoint -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div style="position: fixed; bottom: 0; margin: 0; width: 100%;">
+        <div class="footer">
+            <a href="./main" class="profile">
+                <i class="fas fa-home"></i>
+                <p>الصفحة الرئيسية</p>
+            </a>
+            <a href="#" class="profile activeprofile">
+                <i class="fa fa-history" aria-hidden="true"></i>
+                <p>السجلات</p>
+            </a>
+            <a href="./userProfile" class="profile">
+                <i class="fas fa-user"></i>
+                <p>ملفي الشخصي</p>
+            </a>
+        </div>
+    </div>
+
+    <script>
+        function deleteInvoice(id) {
+            if (confirm('هل أنت متأكد من حذف هذه الفاتورة؟')) {
+                fetch(`/api/facture/payed/${id}`, {
+                    method: 'DELETE'
+                })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Failed to delete invoice');
+                    }
+                    alert('تم حذف الفاتورة بنجاح');
+                    // Optionally update the UI after successful deletion (remove row from table)
+                    location.reload(); // Example: Reload the page after deletion
+                })
+                .catch(error => {
+                    console.error('Delete error:', error);
+                    alert('فشل حذف الفاتورة');
+                });
+            }
+        }
+
+        // Fetch data from /api/facture/payed endpoint
+        fetch('/api/facture/payed')
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
+            .then(data => {
+                const tableBody = document.getElementById('table-body');
+                data.forEach(item => {
+                    const row = `
+                        <tr class="single-row" dir="rtl">
+                            <td><input type="text" value="${item.name}" class="product right" disabled></td>
+                            <td><input type="number" value="${item.id}" class="unit" disabled></td>
+                            <td><input type="number" value="${item.montant}" class="price" disabled></td>
+                            <td><input type="text" value="تم الدفع" class="amount" disabled></td>
+                            <td><button class="material-icons" onclick="deleteInvoice(${item.id})">delete_outline</button></td>
+                        </tr>
+                    `;
+                    tableBody.innerHTML += row;
+                });
+            })
+            .catch(error => {
+                console.error('Error fetching data:', error);
+                alert('حدث خطأ أثناء جلب البيانات');
+            });
+    </script>
+</body>
+</html>

@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>تسديد الفواتير</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <link rel="stylesheet" href="css/pub.css"></head>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        text-align: right;
+        background-color: #f5f5f5;
+        margin: 0;
+        padding: 0;
+        overflow: hidden;
+        overflow-y:auto;
+    }
+    
+    header {
+       /* background-color: #333;*/
+        background: linear-gradient(to right, #2d48dfee, #350d91f5);
+
+        color: #fff;
+        padding: 20px;
+        text-align: center;
+    }
+    header h1 {
+color: #fff;    }
+    main {
+        padding: 20px;
+    }
+    
+    .invoice-payment {
+        background-color: #fff;
+        border-radius: 8px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        padding: 20px;
+        margin-bottom: 20px;
+    }
+    
+    h1, h2 {
+        color: #333;
+    }
+    
+    form {
+        display: flex;
+        flex-direction: column;
+    }
+    
+    label {
+        margin-bottom: 10px;
+    }
+    
+    input[type="text"],
+    input[type="number"],
+    input[type="date"],
+    select {
+        padding: 10px;
+        margin-bottom: 15px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        font-size: 16px;
+    }
+    
+    button {
+        padding: 12px 20px;
+        font-size: 16px;
+        background: linear-gradient(to right, #2d48dfee, #350d91f5);
+        color: #fff;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+    }
+    
+    button:hover {
+        background-color: #555;
+    }
+    
+</style>
+<body>
+    <header  style="position:sticky;top:0;width:100%">
+        <h1>تسديد الفواتير</h1>
+    </header>
+
+    <main>
+        <section class="invoice-payment" >
+            <!-- <h2>سداد الفاتورة</h2> -->
+            <form id="paymentForm" dir="rtl">
+                <label for="invoiceNumber">نوع الفاتورة:</label>
+                <select  id="factureType" name="factureType" >
+                    <option value="electricity"> فاتورة الكهرباء والغاز</option>
+                    <option value="water">فاتورة الماء</option>
+                    <option value="internet">فاتورة الانترنت</option>
+                    <option value="phone">فاتورة الهاتف</option>
+                </select>
+
+                <label for="amount">المبلغ:</label>
+                <input type="number" id="amount" name="amount" required>
+                <label for="cardNumber">رقم البطاقة:</label>
+                <input type="number" id="cardNumber" name="cardNumber" required>
+                <label for="expiryDate">تاريخ الانتهاء:</label>
+                <input type="date" id="expiryDate" name="expiryDate" required>
+                <label for="cvv">الرقم السري:</label>
+                <input type="number" id="cvv" name="cvv" required>
+                <label for="name">الاسم على البطاقة:</label>
+                <input type="text" id="name" name="name" required>
+                
+                
+                
+                
+                <button type="submit">تسديد الفاتورة</button>
+            </form>
+        </section>
+    </main>
+
+    <footer>
+        <p>© 2024 تسديد الفواتير</p>
+    </footer>
+
+    <script src="scripts.js">
+        document.getElementById('paymentForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            
+            const factureType = document.getElementById('factureType').value;
+            const amount = document.getElementById('amount').value;
+            const cardNumber = document.getElementById('cardNumber').value;
+            const expiryDate = document.getElementById('expiryDate').value;
+            const cvv = document.getElementById('cvv').value;
+            const nameOnCard = document.getElementById('name').value;
+            
+            // Example: Send payment data to a backend API
+            const paymentData = {
+                factureType,
+                amount,
+                cardNumber,
+                expiryDate,
+                cvv,
+                nameOnCard
+            };
+        
+            // Simulate payment processing with a fetch request
+            fetch('https://your-api-endpoint.com/pay', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(paymentData)
+            })
+            .then(response => {
+                if (response.ok) {
+                    alert('تم سداد الفاتورة بنجاح!');
+                    // Additional actions upon successful payment
+                } else {
+                    alert('حدث خطأ أثناء عملية السداد. الرجاء المحاولة مرة أخرى.');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('حدث خطأ أثناء عملية السداد. الرجاء المحاولة مرة أخرى.');
+            });
+        });
+        
+    </script>
+
+    <div style="position:fixed;bottom:0;margin :0;width:100%">
+        <div class="footer">
+          <a href="./main" class="profile">
+              <i class="fas fa-home"></i>
+              <p>الصفحة الرئيسية</p>
+          </a>
+      
+          <a href="./history" class="profile">
+              <i class="fa fa-history" aria-hidden="true"></i>
+              <p>السجلات</p>
+          </a>
+      
+          <a href="./userProfile" class="profile">
+              <i class="fas fa-user"></i>
+              <p>ملفي الشخصي</p>
+          </a>
+      </div>
+      </div>
+</body>
+</html>
