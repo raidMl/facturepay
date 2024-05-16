@@ -87,17 +87,37 @@ color: #fff;    }
         <section class="invoice-payment" >
             <!-- <h2>سداد الفاتورة</h2> -->
             <form id="paymentForm" dir="rtl">
-                <label for="invoiceNumber">نوع الفاتورة:</label>
-                <select  id="factureType" name="factureType" >
-                    <option value="electricity"> فاتورة الكهرباء والغاز</option>
-                    <option value="water">فاتورة الماء</option>
-                    <option value="internet">فاتورة الانترنت</option>
-                    <option value="phone">فاتورة الهاتف</option>
+                <label for="factureType">نوع الفاتورة:</label>
+                <select id="factureType" name="factureType">
+                    <option value="فاتورة الكهرباء ">فاتورة الكهرباء </option>
+                    <option value="فاتورة الغاز">فاتورة الغاز</option>
+                    <option value="فاتورة الهاتف">فاتورة الهاتف</option>
+                    <option value="فاتورة الانترنت">فاتورة الانترنت</option>
                 </select>
+                
+                <label for="invoiceNumber">رقم الفاتورة:</label>
+                <select name="factureNumber" id="factureNumber" onchange="updateMontant()">
+                    <% if (invoices && invoices.length > 0) { %>
+                        <% invoices.forEach((invoice) => { %>
+                            <option value="<%= invoice.id %>"> <%= invoice.id %> </option>
+                        <% }); %>
+                    <% } else { %>
+                        <option value="0">لا توجد فواتير غير مدفوعة.</option>
+                    <% } %>
+                </select>
+                    
+               
+                          
 
                 <label for="amount">المبلغ:</label>
-                <input type="number" id="amount" name="amount" required>
-                <label for="cardNumber">رقم البطاقة:</label>
+                <select name="amount" id="amount" onchange="updateMontant()">
+                    <% if (invoices && invoices.length > 0) { %>
+                        <% invoices.forEach((invoice) => { %>
+                            <option value="<%= invoice.montant %>"> <%= invoice.montant %> </option>
+                        <% }); %>
+                    <% }   %>
+                        
+                </select>                <label for="cardNumber">رقم البطاقة:</label>
                 <input type="number" id="cardNumber" name="cardNumber" required>
                 <label for="expiryDate">تاريخ الانتهاء:</label>
                 <input type="date" id="expiryDate" name="expiryDate" required>
@@ -118,8 +138,31 @@ color: #fff;    }
         <p>© 2024 تسديد الفواتير</p>
     </footer>
 
-    <script src="scripts.js">
-        document.getElementById('paymentForm').addEventListener('submit', function(event) {
+    <script>
+        const mydata=[]
+        fetch('/api/facture/pending')
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.json();
+        })
+        .then(data => {
+            //const options = document.getElementById('factureNumber');
+            data.forEach(item => {
+              mydata.append( {"id":item.id,"montant":item.montant,"name":item.name})
+                })})
+
+                console.log(mydata);
+        function updateMontant() {
+            var invoiceNumber = document.getElementById('factureNumber').value;
+            invoiceNumber = Number(invoiceNumber);
+            console.log(invoiceNumber);
+          }
+
+        
+
+      /*  document.getElementById('paymentForm').addEventListener('submit', function(event) {
             event.preventDefault();
             
             const factureType = document.getElementById('factureType').value;
@@ -159,7 +202,7 @@ color: #fff;    }
                 console.error('Error:', error);
                 alert('حدث خطأ أثناء عملية السداد. الرجاء المحاولة مرة أخرى.');
             });
-        });
+        });  */
         
     </script>
 

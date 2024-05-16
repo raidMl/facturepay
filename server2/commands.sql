@@ -39,3 +39,7 @@ VALUES
     ALTER DATABASE facture_db
     CHARACTER SET utf8mb4
     COLLATE utf8mb4_unicode_ci;
+
+
+
+    insert into compte(id_user,solde,numero,cvv,date_expiration) values(1,10000,'11045070',4040,'2024-05-01')

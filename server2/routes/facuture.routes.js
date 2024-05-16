@@ -44,33 +44,6 @@ router.get('/:id',async(req,res)=>{
     
   }})
 
-// for see factures
-
-;
-
-
-// Route to fetch pending invoices for the logged-in user
-router.get('/pending', async (req, res) => {
-    try {
-        const userId = req.session.user.id; // Retrieve user ID from session (assuming user is authenticated)
-
-        // Fetch pending invoices for the specified user from the database
-        const [rows] = await pool.query(
-            'SELECT * FROM facture WHERE status = ? AND id_user = ?',
-            ['pending', userId]
-        );
-
-        if (rows.length === 0) {
-            return res.status(404).json({ message: "No pending invoices found for this user" });
-        }
-
-        // Render the EJS template with the fetched invoices data
-        res.render('facture', { invoices: rows }); // Pass 'invoices' data to the 'facture.ejs' template
-    } catch (error) {
-        console.error('Error fetching pending invoices:', error);
-        res.status(500).json({ message: 'Internal Server Error' });
-    }
-});
 
 // for search in pending factures
 router.get('/pending/:id',async(req,res)=>{
@@ -85,6 +58,29 @@ router.get('/pending/:id',async(req,res)=>{
       res.status(500).json({message:error.message});
       
     }})
+
+    //get all pendign
+
+    router.get('/pending',async(req,res)=>{
+        try {
+              
+            const userId = req.session.user.id; // Retrieve user ID from session (assuming user is authenticated)
+
+            // Fetch pending invoices for the specified user from the database
+            const [rows] = await pool.query(
+                'SELECT id,name,montant FROM facture WHERE status = ? AND id_user = ?',
+                ['pending', userId]
+            );
+            
+            if(rows.length===0){
+              return res.status(400).json({message:"No facture found"});
+          }
+          const rows1=JSON.stringify(rows)
+          res.status(200).json({data:rows1});
+        } catch (error) {
+          res.status(500).json({message:error.message});
+          
+        }})
 
 
 router.post('/admin',async(req,res)=>{

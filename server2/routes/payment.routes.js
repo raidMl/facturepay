@@ -3,6 +3,22 @@ import express from 'express';
 
 const router=express.Router();
 
+router.get('/payment',async(req,res)=>{
+    try {
+        const id=req.session.user.id;
+      
+
+        const userInfo=await pool.query(`select * from  compte where id_user=?`,[id]);
+        
+        res.status(201).json({userInfo:userInfo});
+    } catch (error) {
+        res.status(500).json({message:error.message});
+    }
+    
+        
+})
+
+
 router.post('/payment',async(req,res)=>{
     try {
         const {numero,solde,cvv,date_expiration,id_user}=req.body;
@@ -17,6 +33,9 @@ router.post('/payment',async(req,res)=>{
     
         
 })
+
+
+
 
 router.patch('/payment',async(req,res)=>{
     try {

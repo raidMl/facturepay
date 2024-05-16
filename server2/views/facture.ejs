@@ -146,7 +146,7 @@ nav {
         if (!response.ok) {
             throw new Error('Network response was not ok');
         }
-
+          
         const invoice = await response.json();
         console.log('Fetched invoice:', invoice);
 
@@ -193,60 +193,7 @@ nav {
     }
 }
 
-    // Fetch the invoice data
-    fetch(`/api/facture/pending/${id}`)
-        .then(response => {
-            if (!response.ok) {
-                throw new Error('Network response was not ok');
-            }
-            return response.json();
-        })
-        .then(invoice => {
-            console.log('Fetched invoice:', invoice);
-
-            // Create a new window
-            const printWindow = window.open('', '_blank');
-
-            if (printWindow) {
-                // Write the invoice data to the new window
-                printWindow.document.write(`
-                    <html>
-                        <head>
-                            <title>فاتورة #${invoice.id}</title>
-                            <style>
-                                body {
-                                    font-family: 'Roboto', sans-serif;
-                                    padding: 20px;
-                                }
-                                h1 {
-                                    font-size: 2rem;
-                                    margin-bottom: 10px;
-                                }
-                                p {
-                                    font-size: 1.2rem;
-                                    margin-bottom: 5px;
-                                }
-                            </style>
-                        </head>
-                        <body dir='rtl'>
-                            <h1>الفاتورة #${invoice.id}</h1>
-                            <p>الاسم: ${invoice.name}</p>
-                            <p>التاريخ: ${invoice.date}</p>
-                            <p>المبلغ: ${invoice.montant.toFixed(2)} دينار</p>
-                            <p>الحالة: لم تدفع</p>
-                        </body>
-                    </html>
-                `);
-                // Print the window
-                printWindow.print();
-            } else {
-                console.error('Failed to open print window');
-            }
-        })
-        .catch(error => {
-            console.error('Print error:', error);
-        });
-}
+   
     </script>
 </body>
 </html>
