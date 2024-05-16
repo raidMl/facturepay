@@ -18,7 +18,7 @@
             height: 100vh;
             display: flex;
             align-items: center;
-            justify-content: space-between;
+            justify-content: center;
             text-align: center;
         }
         
@@ -40,6 +40,8 @@
             margin-bottom: 30px;
         }
         
+      
+
         .login-button {
             padding: 12px 30px;
             font-size: 1.2em;
@@ -50,17 +52,27 @@
             cursor: pointer;
             transition: background-color 0.3s ease;
         }
-        
+
         .login-button:hover {
             background-color: rgba(255, 255, 255, 0.8);
         }
-        
+
+        .login-button:active {
+            background-color: rgba(255, 255, 255, 0.6);
+        }
+
+        @media (max-width: 768px) {
+            .hero-section {
+                flex-direction: column;
+            }
+        }
+
     </style>
 </head>
 <body>
     <div class="hero-section">
         <img src="images/img.svg" alt="" height="520px" width="520px">
-        <div class="content">
+        <div class="">
         
             <h1>سجلات الفواتير</h1>
             <p>نظام الدفع السريع لفواتير الخدمات</p>
