@@ -106,11 +106,20 @@ nav {
                     <div class="invoice">
                         <h2>الفاتورة رقم: <%= invoice.id %></h2>
                         <p>الاسم: <%= invoice.name %></p>
-                        <p>التاريخ: <%= invoice.date %></p>
+                        <p id="pp<%= invoice.id %>"></p> <!-- Unique ID for each date -->
                         <p>المبلغ: <%= invoice.montant.toFixed(2) %>دينار</p>
                         <p>الحالة: <%= invoice.status %></p>
                         <button onclick='printInvoice("<%= invoice.id %>")'>طباعة</button>
                     </div>
+    
+                    <!-- JavaScript to set the date -->
+                    <script>
+                        let dateObject<%= invoice.id %> = new Date('<%= invoice.date %>');
+                        let day<%= invoice.id %> = dateObject<%= invoice.id %>.getDate(); // Day of the month (1-31)
+                        let month<%= invoice.id %> = dateObject<%= invoice.id %>.getMonth() + 1; // Month (0-11, add 1 to get 1-12)
+                        let year<%= invoice.id %> = dateObject<%= invoice.id %>.getFullYear();
+                        document.getElementById('pp<%= invoice.id %>').innerHTML = "التاريخ: " + day<%= invoice.id %> + "/" + month<%= invoice.id %> + "/" + year<%= invoice.id %>;
+                    </script>
                 <% }); %>
             <% } else { %>
                 <p class="no-invoices">لا توجد فواتير غير مدفوعة.</p>
@@ -138,7 +147,8 @@ nav {
       </div>
       </div>
     <script >
-  // Print invoice function
+      
+        // Print invoice function
   async function printInvoice(id) {
     try {
         // Fetch the invoice data

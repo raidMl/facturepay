@@ -27,11 +27,13 @@ CREATE TABLE Facture (
 CREATE TABLE Compte (
     id INT PRIMARY KEY AUTO_INCREMENT,
     id_user INT,
-    solde FLOAT,
+    solde FLOAT default 100000,
+    nom VARCHAR(50),
     numero VARCHAR(50),
     cvv VARCHAR(10),
-    date_expiration DATE,
+    date_expiration DATE, 
     FOREIGN KEY (id_user) REFERENCES User(id)
 );
 
+-- alter table Compte add column type varchar(10) default 'courant';
 

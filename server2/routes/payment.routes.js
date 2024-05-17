@@ -37,23 +37,26 @@ router.post('/payment',async(req,res)=>{
 
 
 
-router.patch('/payment',async(req,res)=>{
+router.patch('/payment', async (req, res) => {
     try {
-        const {numero,solde,cvv,date_expiration,montant,id_user}=req.body;
-        if(!id_user || !montant){
-            return res.status(400).json({message:"Please fill all the fields"});
-
+        const { numero, cvv, date_expiration, montant, id_user, fname, factureType, factureNumber } = req.body;
+        if (!id_user || !montant) {
+            return res.status(400).json({ message: "Please fill all the fields" });
         }
-        row=await pool.query(`select * from compte where numero=? and cvv=? and date_expiration=? and id_user=?`,[numero,cvv,date_expiration,id_user]);
-       if(row.length===0){
-           return res.status(400).json({message:"No compte found"});}
 
-        await pool.query(`update compte set solde=solde-? where id_user=?`,[montant,id_user]);
-        res.status(201).json({message:"Payment created"});
+        const [row] = await pool.query(`SELECT * FROM compte WHERE numero=? AND cvv=? AND date_expiration=? AND id_user=? AND nom=?`, [numero, cvv, date_expiration, id_user, fname]);
+        if (!row) {
+            return res.status(400).json({ message: "No compte found" });
+        }
+
+        await pool.query(`UPDATE compte SET solde=solde-? WHERE id_user=?`, [montant, id_user]);
+        await pool.query(`UPDATE facture SET status='paid' WHERE id_user=? AND name=? AND facture.id=?`, [id_user, factureType, factureNumber]);
+
+        res.status(201).json({ message: "Payment created" });
     } catch (error) {
-        res.status(500).json({message:error.message});
+        res.status(500).json({ message: error.message });
     }
-    
-})
+});
+
 
 export default router;

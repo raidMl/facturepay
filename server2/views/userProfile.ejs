@@ -147,12 +147,16 @@
     return res.json();
   }).then(data=>{
    myCompteInfo= data.userInfo[0][0]
-
+   let dateObject = new Date(myCompteInfo.date_expiration);
+   let day = dateObject.getDate(); // Day of the month (1-31)
+   let month = dateObject.getMonth() + 1; // Month (0-11, add 1 to get 1-12)
+   let year = dateObject.getFullYear();
    info.innerHTML=
    `<p><strong> رقم الحساب :</strong> ${myCompteInfo.numero}</p>`
     +`<p><strong>الرقم السري:</strong> ${myCompteInfo.cvv}</p>`
-    +`<p><strong> تاريخ النهاية :</strong> ${myCompteInfo.date_expiration}</p>`
-    +`<p><strong>الرصيد:</strong> ${myCompteInfo.solde}  دينار</p>`
+    +`<p><strong> تاريخ النهاية :</strong> ${day}/${month}/${year}</p>`
+    +`<p><strong>الرصيد:</strong> ${myCompteInfo.solde}  دينار</p>`;
+    console.log(`${day}/${month}/${year}`);
 
 
   }).catch(err=>{

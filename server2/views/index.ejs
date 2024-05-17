@@ -23,11 +23,9 @@
         }
         
         .content {
-            position: fixed;
+          
             max-width: 500px;
-            right: 200px;
-            padding: 20px;
-            text-align: center;
+           
         }
         
         h1 {
@@ -72,10 +70,10 @@
 <body>
     <div class="hero-section">
         <img src="images/img.svg" alt="" height="520px" width="520px">
-        <div class="">
+        <div class="content">
         
-            <h1>سجلات الفواتير</h1>
-            <p>نظام الدفع السريع لفواتير الخدمات</p>
+            <h1> فواتير</h1>
+            <p>نظام الدفع السريع للفواتير </p>
             <a href="loginRegister" class="login-button">تسجيل الدخول</a>
         </div>
     </div>
@@ -83,7 +81,7 @@
     <script>
         // Typing text effect
 const textElement = document.querySelector('h1');
-const textToType = 'سجلات الفواتير - نظام الدفع السريع لفواتير الخدمات';
+const textToType = 'فواتير - نظام الدفع السريع للفواتير ';
 let textIndex = 0;
 
 function typeText() {
@@ -94,7 +92,8 @@ function typeText() {
         textIndex = 0;
     }
 
-    setTimeout(typeText, 200); // Adjust typing speed (milliseconds)
+    setTimeout(typeText, 200);
+     // Adjust typing speed (milliseconds)
 }
 
 typeText();

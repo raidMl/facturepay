@@ -42,4 +42,4 @@ VALUES
 
 
 
-    insert into compte(id_user,solde,numero,cvv,date_expiration) values(1,10000,'11045070',4040,'2024-05-01')
+  insert into compte(id_user,solde,numero,cvv,date_expiration,nom) values(1,10000,'11045070',4040,'2024-05-01',"abbas abbas");
