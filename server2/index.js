@@ -6,6 +6,7 @@ import pool from './database.js';
 import FactureRoute from './routes/facuture.routes.js';
 import AuthRoute from './routes/auth.routes.js';
 import PayRoute from './routes/payment.routes.js';
+import Admin from './routes/Admin.routes.js';
 import session from 'express-session';
 dotenv.config();
 const app = express();
@@ -31,7 +32,7 @@ app.use(session({
 app.use('/api/facture', FactureRoute);
 app.use('/api/auth', AuthRoute);
 app.use('/api/pay', PayRoute,);
-
+app.use('/api/admin', Admin);
 
 app.get('/', (req, res) => {
   res.render('index');
@@ -40,6 +41,10 @@ app.get('/', (req, res) => {
 app.get('/main', (req, res) => {
     res.render('main');
   });
+
+  app.get('/admin', (req, res) => {
+    res.render('admin');
+  });  
 app.get('/loginRegister', (req, res) => {
     res.render('loginRegister');
 });
@@ -92,6 +97,25 @@ app.get('/pay', async(req, res) => {
     // res.render('pay');
 });
 
+
+/// Render admin page
+
+app.get('/adminFacture', async (req, res) => {
+    res.render('adminFacture', { user: req.session.user });
+}
+);
+
+app.get('/adminUsers', async (req, res) => {
+    res.render('adminUsers', { user: req.session.user });
+});
+
+app.get('/adminAddFacture', async (req, res) => {
+    res.render('adminAddFacture', { user: req.session.user });
+});
+
+app.get('/adminProfile',async(req,res)=>{
+    res.render('adminProfile',{user:req.session.user})
+})
 
 
 

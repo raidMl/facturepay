@@ -39,7 +39,9 @@ router.post('/payment',async(req,res)=>{
 
 router.patch('/payment', async (req, res) => {
     try {
-        const { numero, cvv, date_expiration, montant, id_user, fname, factureType, factureNumber } = req.body;
+        const { numero, cvv, date_expiration, montant, fname, factureType, factureNumber } = req.body;
+        const id_user = req.session.user.id;
+        console.log(req.body);
         if (!id_user || !montant) {
             return res.status(400).json({ message: "Please fill all the fields" });
         }
@@ -50,6 +52,8 @@ router.patch('/payment', async (req, res) => {
         }
 
         await pool.query(`UPDATE compte SET solde=solde-? WHERE id_user=?`, [montant, id_user]);
+        await pool.query(`UPDATE compte SET solde=solde+? WHERE compte.numero=?`, [montant,"535324" ]);
+
         await pool.query(`UPDATE facture SET status='paid' WHERE id_user=? AND name=? AND facture.id=?`, [id_user, factureType, factureNumber]);
 
         res.status(201).json({ message: "Payment created" });

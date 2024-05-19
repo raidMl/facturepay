@@ -7,7 +7,7 @@ const router=express.Router();
 
 router.post('/login', async (req, res) => {
     try {
-        const [rows] = await pool.query(`SELECT * FROM user WHERE user.email=? and user.password=?`, [req.body.email, req.body.password]);
+        const [rows] = await pool.query(`SELECT * FROM user WHERE user.email=? and user.password=? `, [req.body.email, req.body.password]);
         
         if (rows.length === 0) {
             return res.status(400).json({ message: "No user found" });
@@ -23,7 +23,18 @@ router.post('/login', async (req, res) => {
 
              // Redirect to main route after rendering userProfile.ejs
              return res.redirect('/main');
-        } else {
+        }
+        else if (rows[0].role === 'admin' && rows.length === 1) {
+            // Set session user data
+            req.session.user = rows[0];
+            console.log('Session user:', req.session.user);
+
+            // Render adminProfile.ejs template with user data
+            // res.render('adminProfile', { user: req.session.user });
+
+            // Redirect to main route after rendering adminProfile.ejs
+            return res.redirect('/admin');}
+         else {
             // Redirect to loginRegister if user role or length condition not met
             return res.redirect('/loginRegister');
         }
@@ -34,19 +45,6 @@ router.post('/login', async (req, res) => {
 });
 
 
-router.post('/login-admin',async(req,res)=>{
-    try {
-        const [rows]=await pool.query(`SELECT * FROM user WHERE user.email=? and user.password=? and role=?` ,[req.body.email,req.body.password,"admin"]);
-        if(rows.length===0){
-            return res.status(400).json({message:"No user  found"});
-        }
-        res.status(200).json(rows[0]);
-    } catch (error) {
-        res.status(500).json({message:error.message});
-    }
-    
-    
-})
 
 
 router.post('/register',async(req,res)=>{

@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>مولد الفواتير الديناميكي</title>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Roboto:100,100i,300,300i,400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../css/history.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <link rel="stylesheet" href="css/pub.css">
+    <style>
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f0f0f0;
+            overflow-x: hidden;
+        }
+
+
+        
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            background-color: #333;
+            padding: 10px 0;
+            position: fixed;
+            top:0;
+            width: 100%;
+            z-index: 10;
+        }
+
+        nav a ,nav div  {
+            color: #fff;
+            text-decoration: none;
+            padding: 10px 20px;
+            font-size: 1.1rem;
+            margin: 0 10px;
+            transition: background-color 0.3s ease, border-radius 0.3s ease;
+        }
+
+        nav a:hover {
+            background-color: #444;
+            border-radius: 5px;
+        }
+.invoice-container{
+    margin-top: 80px;
+
+}
+
+        form {
+
+            display: flex;
+            flex-direction: column;
+        }
+        
+        label {
+            margin-bottom: 10px;
+        }
+        
+        input[type="text"],
+        input[type="number"],
+        input[type="date"],
+        select {
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 16px;
+        }
+        input[type="date"]
+        {width: 80%;}
+
+        
+        button {
+            padding: 12px 20px;
+            font-size: 16px;
+            background: linear-gradient(to right, #2d48dfee, #350d91f5);
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        
+        button:hover {
+            background-color: #555;
+        }
+
+        @media (max-width: 568px) {
+            nav {
+                flex-direction: column;
+            }
+    
+            nav a {
+                margin: 10px 0;
+            }}
+    </style>
+</head>
+<body>
+    <nav dir="rtl">
+        <a href="/admin"><i class="fas fa-home"></i> الرئيسية</a>
+
+        <div>
+        <a href="/adminProfile"><i class="fas fa-user"></i>الحساب الشخصي</a>
+
+        <a href="/api/auth/logout"><i class="fas fa-sign-out-alt"></i>  الخروج</a>
+    </div>
+    </nav>
+    <div class="invoice-container">
+        <div class="invoice-header" style="text-align: center;">
+            <div>
+            </div>
+            <div><h2 style="font-size: 19px;"> اضافة فاتورة</h2></div>
+        </div>
+        <div class="invoice-body">
+            <form id="paymentForm" dir="rtl" onsubmit="handleSubmit()" >
+
+            <label for="invoiceNumber">اسم المستخدم:</label>
+                <select name="factureUser" id="factureUser"  >
+                </select>
+                <label for="factureType">اسم الفاتورة:</label>
+                <select type="" id="factureType" name="factureType" required>
+                    <option value="فاتورة الكهرباء ">فاتورة الكهرباء </option>
+                    <option value="فاتورة الغاز">فاتورة الغاز</option>
+                    <option value="فاتورة الهاتف">فاتورة الهاتف</option>
+                    <option value="فاتورة الانترنت">فاتورة الانترنت</option>
+                </select>
+                <div style="display: flex; justify-content: space-around;">
+                    <div style="display: flex; flex-direction: column;">
+                <label for="amount">المبلغ:</label>
+                <input type="number" id="amount" name="amount" required>
+            </div>
+            <div style="display: flex; flex-direction: column;">
+
+                <label for="mydate">التاريخ:</label>
+                <input type="date" id="mydate" name="mydate" required></div>
+     </div>
+                <button type="submit" >اضافة الفاتورة</button>
+            </form>
+        </div>
+    </div>
+
+  
+
+    <script>
+      var  users= document.getElementById('factureUser')
+
+        fetch('/api/admin/getusers')
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.json();
+
+        })
+        .then(data => {
+            data.forEach(user=>{
+                console.log(user);
+                let userop=`    <option value="${user.id}">${user.nom+" " +user.prenom}</option>     `
+                users.innerHTML+=userop
+            })
+        })
+        .catch(error=>console.log(error))
+
+         
+        const handleSubmit=()=>{
+            //post facture for user fullname
+            event.preventDefault();
+            var userId=  document.getElementById("factureUser").value;
+            var factureType = document.getElementById('factureType').value;
+            var montant = document.getElementById('amount').value;
+            var date = document.getElementById('mydate').value;
+         
+            var newfacture = {
+                name: factureType,
+                id_user: userId,
+                montant: Number(montant),
+                date:date,
+                
+            };
+
+
+        fetch('/api/facture/add',{method:"POST",
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(newfacture)
+    })
+    
+        
+
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+                alert('تم الاضافة بنجاح')
+            })
+           
+            
+            .catch(error => {
+                console.error('Error fetching data:', error);
+                alert('حدث خطأ أثناء جلب البيانات');
+            });}
+
+    
+    </script>
+</body>
+</html>

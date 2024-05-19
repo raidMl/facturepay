@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="ar"></html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>لوحة التحكم للمشرف</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f0f0f0;
+            overflow-x: hidden;
+        }
+
+     
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            background-color: #333;
+            padding: 10px 0;
+        }
+
+        nav a ,nav div  {
+            color: #fff;
+            text-decoration: none;
+            padding: 10px 20px;
+            font-size: 1.1rem;
+            margin: 0 10px;
+            transition: background-color 0.3s ease, border-radius 0.3s ease;
+        }
+
+        nav a:hover {
+            background-color: #444;
+            border-radius: 5px;
+        }
+
+        main{
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .profile-container {
+            
+            max-width: 600px;
+            width: 100%;
+            padding: 20px;
+          }
+          
+          .profile-card {
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            animation: slideIn 0.5s ease forwards;
+      
+          }
+          @keyframes slideIn {
+            from {
+              transform: translateY(-50px);
+              opacity: 0;
+            }
+            to {
+              transform: translateY(0);
+              opacity: 1;
+            }
+          }
+          
+          .avatar {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            display: block;
+            margin: 20px auto;
+            background-color: #ccc; /* Placeholder color */
+            /* You can use background-image property to set user's image */
+          }
+          
+          .user-info {
+            text-align: center;
+          }
+          
+          .user-name {
+            font-size: 24px;
+            font-weight: bold;
+            color: #222222;
+            margin-bottom: 10px;
+          }
+          
+          .user-details {
+            text-align: right;
+            padding: 0 20px;
+          }
+          
+          .user-details p {
+            margin-bottom: 10px;
+            letter-spacing: 1.2px;
+            color: rgb(71, 71, 68);
+          }
+          .user-details p strong {
+            color: #222222;
+          }
+      
+          .account-info {
+            margin-top: 20px;
+          }
+
+
+     
+
+    @media (max-width: 568px) {
+        nav {
+            flex-direction: column;
+        }
+
+        nav a {
+            margin: 10px 0;
+        }
+    
+    .maindiv{
+        display: flex;
+        flex-direction: column;
+
+        justify-content: center;
+        align-items: center;
+    }
+    }
+
+
+    </style>
+</head>
+<body>
+   
+
+    <nav dir="rtl">
+        <a href="/admin"><i class="fas fa-home"></i> الرئيسية</a>
+
+        <div>
+        <a href="/adminProfile"><i class="fas fa-user"></i>الحساب الشخصي</a>
+
+        <a href="/api/auth/logout"><i class="fas fa-sign-out-alt"></i>  الخروج</a>
+    </div>
+    </nav>
+<main>
+    <div class="profile-container">
+        <div class="profile-card">
+          <img src="images/user.png" alt="User Avatar" class="avatar">
+          <div class="user-info" dir="rtl">
+            <h2 class="user-name"><%= user.nom %> <%= user.prenom %></h2>
+            <div class="user-details">
+              <p><strong>الاقامة:</strong> <%= user.adresse %></p>
+              <p><strong>الهاتف:</strong> <%= user.telephone %></p>
+              <p><strong>الايمايل:</strong> <%= user.email %></p>
+              <p><strong>الدور:</strong> <%= user.role %></p>
+              <h3>معلومات حول الحساب:</h3>
+              
+              <div id="compteInfo" class="account-info">
+                <!-- Account information will be populated dynamically -->
+              </div>
+            </div>
+          </div>
+        </div>
+        </div>
+    </main>
+
+        <script>
+            var myCompteInfo={numero:0,cvv:0,date_expiration:0,solde:0}
+            var info=document.getElementById('compteInfo');
+            fetch('api/pay/payment').then(res=>{
+            
+                
+             //console.log(res.json);
+             
+              return res.json();
+            }).then(data=>{
+             myCompteInfo= data.userInfo[0][0]
+             let dateObject = new Date(myCompteInfo.date_expiration);
+             let day = dateObject.getDate(); // Day of the month (1-31)
+             let month = dateObject.getMonth() + 1; // Month (0-11, add 1 to get 1-12)
+             let year = dateObject.getFullYear();
+             info.innerHTML=
+             `<p><strong> رقم الحساب :</strong> ${myCompteInfo.numero}</p>`
+              +`<p><strong>الرقم السري:</strong> ${myCompteInfo.cvv}</p>`
+              +`<p><strong> تاريخ النهاية :</strong> ${day}/${month}/${year}</p>`
+              +`<p><strong>الرصيد:</strong> ${myCompteInfo.solde}  دينار</p>`;
+              console.log(`${day}/${month}/${year}`);
+          
+          
+            }).catch(err=>{
+              console.log(err)})
+           
+          </script>
+</body>
+</html>

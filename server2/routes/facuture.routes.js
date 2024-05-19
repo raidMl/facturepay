@@ -83,13 +83,13 @@ router.get('/pending/:id',async(req,res)=>{
         }})
 
 
-router.post('/admin',async(req,res)=>{
+router.post('/add',async(req,res)=>{
     try {
         const {id_user}=req.body;
         if(!id_user ){
             return res.status(400).json({message:"Please fill all the fields"});
         }
-        await pool.query(`INSERT INTO facture(name,date,montant,status,id_user) VALUES(?,?,?,?,?)`,[req.body.name,req.body.date,req.body.montant,req.body.status,id_user,]);
+        await pool.query(`INSERT INTO facture(name,date,montant,status,id_user) VALUES(?,?,?,?,?)`,[req.body.name,req.body.date,req.body.montant,"pending",id_user,]);
         res.status(201).json({message:"Facture created"});
     } catch (error) {
         res.status(500).json({message:error.message});

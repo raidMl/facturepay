@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+    <link rel="manifest" href="./manifest.json">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Raid's Portfolio</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            background-color: #f8f9fa;
+            color: #333;
+            margin: 0;
+            padding: 0;
+        }
+
+        header {
+            background-color: #007bff;
+            color: #fff;
+            padding: 2rem;
+            text-align: center;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        h1,
+        h2,
+        h3 {
+            color: #007bff;
+        }
+
+        .project {
+            margin-bottom: 2rem;
+            padding: 1rem;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease-in-out;
+        }
+
+        .project:hover {
+            transform: translateY(-5px);
+        }
+
+        footer {
+            text-align: center;
+            padding: 1rem;
+            background-color: #007bff;
+            color: #fff;
+            position: fixed;
+            left: 0;
+            bottom: 0;
+            width: 100%;
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <h1>Raid's Portfolio</h1>
+        <p>Full Stack Developer & Machine Learning Enthusiast</p>
+    </header>
+
+    <div class="container">
+        <section id="about">
+            <h2>About Me</h2>
+            <p>I am a passionate full stack developer with a strong interest in machine learning and data science. Currently exploring new technologies and always eager to learn.</p>
+        </section>
+
+        <section id="projects">
+            <h2>Projects</h2>
+            <div id="projects-list"></div>
+        </section>
+
+        <section id="skills">
+            <h2>Skills</h2>
+            <ul>
+                <li>Python</li>
+                <li>JavaScript</li>
+                <li>HTML/CSS</li>
+                <li>React</li>
+                <li>Node.js</li>
+                <li>SQL</li>
+                <li>Git</li>
+            </ul>
+        </section>
+
+        <section id="contact">
+            <h2>Contact Me</h2>
+            <p>Email: your@email.com</p>
+            <p>GitHub: <a href="https://github.com/raidMl">github.com/raidMl</a></p>
+        </section>
+    </div>
+
+    <footer>
+        <p>&copy; 2024 Raid's Portfolio</p>
+    </footer>
+
+    <script>
+        fetch('https://api.github.com/users/raidMl/repos?sort=created&per_page=5')
+            .then(response => response.json())
+            .then(data => {
+                const projectsList = document.getElementById('projects-list');
+                data.forEach(project => {
+                    const projectDiv = document.createElement('div');
+                    projectDiv.classList.add('project');
+                    projectDiv.innerHTML = `
+                        <h3>${project.name}</h3>
+                        <p>${project.description || 'No description provided.'}</p>
+                        <a href="${project.html_url}" target="_blank">View on GitHub</a>
+                    `;
+                    projectsList.appendChild(projectDiv);
+                });
+            })
+            .catch(error => console.error('Error fetching GitHub projects:', error));
+    </script>
+</body>
+
+</html>
